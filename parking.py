@@ -1,6 +1,6 @@
 import hopsworks
 import parking
-
+import sys
 import requests
 import time
 from datetime import datetime, timedelta, timezone
@@ -9,7 +9,7 @@ import pytz
 import pandas as pd
 
 
-def get_parking_last_hour(api_key, hours: int) -> pd.DataFrame:
+def get_parking_last_hour(api_key: str, hours: int) -> pd.DataFrame:
     API_BASE_URL = "https://apis.smartcity.hn/bildungscampus/iotplatform/parkinglot/v1"
     API_KEY = api_key
     AUTH_GROUP = "parkinglot_assets"
@@ -96,15 +96,16 @@ def get_parking_last_hour(api_key, hours: int) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    
-    get_parking_last_hour(3)
+    print("All arguments:", sys.argv)
+    print("First argument:", sys.argv[1])
+    get_parking_last_hour(api_key=sys.argv[1], hours=3)
     proj = hopsworks.login()
     fs = proj.get_feature_store()
     fg = fs.get_feature_group("parking")
 
     prev_hours=1
     api_key=""
-    df = parking.get_parking_last_hour(api_key=api_key, hours=prev_hours)
+    df = parking.get_parking_last_hour(api_key=sys.argv[1], hours=prev_hours)
     df.tail(10)
 
     fg.insert(df)
