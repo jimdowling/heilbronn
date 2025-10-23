@@ -1,3 +1,6 @@
+import hopsworks
+import parking
+
 import requests
 import time
 from datetime import datetime, timedelta, timezone
@@ -95,3 +98,13 @@ def get_parking_last_hour(api_key, hours: int) -> pd.DataFrame:
 if __name__ == "__main__":
     
     get_parking_last_hour(3)
+    proj = hopsworks.login()
+    fs = proj.get_feature_store()
+    fg = fs.get_feature_group("parking")
+
+    prev_hours=1
+    api_key=""
+    df = parking.get_parking_last_hour(api_key=api_key, hours=prev_hours)
+    df.tail(10)
+
+    fg.insert(df)
