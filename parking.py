@@ -25,9 +25,6 @@ def get_parking_last_hour(api_key: str, hours: int) -> pd.DataFrame:
     print(f"Time now is: {now_berlin}")
     print(f"Unix time now is: {now_berlin.timestamp()}")
         
-#     broad_start = int((datetime.utcnow() - timedelta(hours=hours)).timestamp() * 1000)
-#     broad_end = int(time.time() * 1000)
-
     url = f"{API_BASE_URL}/authGroup/{AUTH_GROUP}/entityId/{ENTITY_ID}/valueType/timeseries"
     params = {
         "keys": KEY,
@@ -98,14 +95,13 @@ def get_parking_last_hour(api_key: str, hours: int) -> pd.DataFrame:
 if __name__ == "__main__":
     print("All arguments:", sys.argv)
     print("First argument:", sys.argv[1])
-    get_parking_last_hour(api_key=sys.argv[1], hours=3)
-    proj = hopsworks.login()
-    fs = proj.get_feature_store()
-    fg = fs.get_feature_group("parking")
+    print("2nd argument:", sys.argv[2])
 
-    prev_hours=1
     api_key=""
-    df = parking.get_parking_last_hour(api_key=sys.argv[1], hours=prev_hours)
-    df.tail(10)
+    df = parking.get_parking_last_hour(api_key=sys.argv[1], hours=int(sys.argv[2]))
+    print(df.tail(10))
 
-    fg.insert(df)
+#     proj = hopsworks.login()
+#     fs = proj.get_feature_store()
+#     fg = fs.get_feature_group("parking")
+#     fg.insert(df)
