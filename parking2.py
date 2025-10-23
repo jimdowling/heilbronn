@@ -104,3 +104,7 @@ if __name__ == "__main__":
     api_key=""
     df = get_parking_last_hour(api_key=sys.argv[1], hours=int(sys.argv[2]))
     print(df.tail(10))
+    proj = hopsworks.login()
+    fs = proj.get_feature_store()
+    fg = fs.get_feature_group("parking")
+    fg.insert(df)
