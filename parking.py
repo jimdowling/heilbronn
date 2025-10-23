@@ -6,9 +6,9 @@ import pytz
 import pandas as pd
 
 
-def get_parking_last_hour(hours: int) -> pd.DataFrame:
+def get_parking_last_hour(api_key, hours: int) -> pd.DataFrame:
     API_BASE_URL = "https://apis.smartcity.hn/bildungscampus/iotplatform/parkinglot/v1"
-    API_KEY = "7GGkBvPUogMX3EbbNDe1qOSiMfSpmbcQLZhaW3dx9hxBhFLA"
+    API_KEY = api_key
     AUTH_GROUP = "parkinglot_assets"
     ENTITY_ID = "65e6efa0-83a5-11ee-be51-afb66b2180af"
     KEY = "current"
